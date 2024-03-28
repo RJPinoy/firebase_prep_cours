@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import * as React from "react";
 import { FIREBASE_AUTH } from '../firebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
@@ -42,18 +42,20 @@ const LoginScreen = () => {
     return (
         <>
             <View style={styles.container}>
-                <Text style={styles.title}>Login</Text>
-                <TextInput style={styles.input} placeholder='Email' value={ email } autoCapitalize='none' onChangeText={ setEmail }/>
-                <TextInput style={styles.input} placeholder='Password' value={ password } autoCapitalize='none' onChangeText={ setPassword } secureTextEntry={true} />
-                {
-                    isLoading ? 
-                    <ActivityIndicator size='large' color={ 'black' }/>
-                    :
-                    <View style={styles.buttonContainer}>
-                        <Button title='LOG IN' onPress={ signIn }/>
-                        <Button title='SIGN UP' onPress={ SignUp }/>
-                    </View>
-                }
+                <KeyboardAvoidingView behavior='padding'>
+                    <Text style={styles.title}>Login</Text>
+                    <TextInput style={styles.input} placeholder='Email' value={ email } autoCapitalize='none' onChangeText={ setEmail }/>
+                    <TextInput style={styles.input} placeholder='Password' value={ password } autoCapitalize='none' onChangeText={ setPassword } secureTextEntry={ true } />
+                    {
+                        isLoading ? 
+                        <ActivityIndicator size='large' color={ 'black' }/>
+                        :
+                        <View style={styles.buttonContainer}>
+                            <Button title='LOG IN' onPress={ signIn }/>
+                            <Button title='SIGN UP' onPress={ SignUp }/>
+                        </View>
+                    }
+                </KeyboardAvoidingView>
             </View>
         </>
     );
