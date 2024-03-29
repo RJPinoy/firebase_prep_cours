@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View, Button } from 'react-native';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     return (
         <>
             <View style={styles.container}>
                 <Text>Homescreen!</Text>
                 <Button title='Log out' onPress={() => { console.log('should log out') }} />
+                <Button title='Navigate to Firestore page' onPress={() => { navigation.navigate('Firestore') }} />
             </View>
         </>
     );
 }
  
-export default HomeScreen;
+ export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {
