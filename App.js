@@ -1,6 +1,8 @@
 import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import Firestore from "./screens/Firestore";
+import BookForm from "./screens/BookForm";
+import BookList from "./screens/BookList";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { User, onAuthStateChanged } from "firebase/auth";
@@ -25,6 +27,8 @@ export default function App() {
       <InnerStack.Navigator initialRouteName="Home">
         <InnerStack.Screen name='Home' component={ HomeScreen } />
         <InnerStack.Screen name='Firestore' component={ Firestore } />
+        <InnerStack.Screen name='BookForm' component={ BookForm } />
+        <InnerStack.Screen name='BookList' component={ BookList } />
       </InnerStack.Navigator>
     )
   }

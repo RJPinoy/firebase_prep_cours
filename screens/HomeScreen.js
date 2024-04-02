@@ -7,6 +7,8 @@ const HomeScreen = ({ navigation }) => {
                 <Text>Homescreen!</Text>
                 <Button title='Log out' onPress={() => { console.log('should log out') }} />
                 <Button title='Navigate to Firestore page' onPress={() => { navigation.navigate('Firestore') }} />
+                <Button title='Navigate to BookForm page' onPress={() => { navigation.navigate('BookForm') }} />
+                <Button title='Navigate to BookList page' onPress={() => { navigation.navigate('BookList') }} />
             </View>
         </>
     );
