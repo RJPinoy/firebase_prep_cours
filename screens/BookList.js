@@ -1,12 +1,12 @@
 import * as React from "react";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { db } from "../firebaseConfig";
-import { collection, getDocs } from "firebase/firestore";
+import { doc, collection, getDocs, deleteDoc } from "firebase/firestore";
 import { Entypo } from "@expo/vector-icons";
 
-const BookList = () => {
+const BookList = ({ navigation }) => {
     const [books, setBooks] = React.useState([]);
-
+    
     const getData = async () => {
         const querySnapshot = await getDocs(collection(db, "Books"));
         let bookArray = [];
@@ -17,32 +17,51 @@ const BookList = () => {
         setBooks(bookArray);
         // console.log('books : ', books);
     }
+    
+    React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+            getData();
+        });
+    
+        // Clean up the subscription when the component unmounts
+        return unsubscribe;
+    }, [navigation]);    
+
+    const handleEdit = (id) => {
+        const thisBook = books.find(book => book.id === id);
+        console.log('should edit : ', id, 'book : ', thisBook);
+        navigation.navigate('BookForm', { book: thisBook });
+    }
+
+    const handleDelete = async (id) => {
+        const thisBook = books.find(book => book.id === id);
+        console.log('should delete : ', id, 'book : ', thisBook);
+        setBooks(prevBooks => prevBooks.filter(book => book.id !== id));
+        await deleteDoc(doc(db, "Books", id));
+    }
 
     const displayBooks = (book, key) => {
         return (
             <View key={key} style={styles.bookContainer}>
                 <View style={styles.bookInfo}>
-                    <Text style={styles.bookText}>ID : {book.id}</Text>
-                    <Text style={styles.bookText}>Title : {book.data.bookName}</Text>
-                    <Text style={styles.bookText}>Author : {book.data.author}</Text>
-                    <Text style={styles.bookText}>Year : {book.data.yearOfPublication}</Text>
-                    <Text style={styles.bookText}>{book.data.saga}</Text>
+                    {/* <Text style={styles.bookText}>ID : { book.id }</Text> */}
+                    <Text style={styles.bookText}>Title : { book.data.bookName }</Text>
+                    <Text style={styles.bookText}>Author : { book.data.author }</Text>
+                    <Text style={styles.bookText}>Year : { book.data.yearOfPublication }</Text>
+                    <Text style={styles.bookText}>{ book.data.saga }</Text>
                 </View>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button}>
-                        <Entypo name="cog" size={28} color={'black'} onPress={() => {console.log('should edit')}}/>
+                        <Entypo name="cog" size={28} color={'black'} onPress={() => { handleEdit(book.id) }}/>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>
-                        <Entypo name="circle-with-cross" size={28} color={'black'} onPress={() => {console.log('should delete')}}/>
+                        <Entypo name="circle-with-cross" size={28} color={'black'} onPress={() => { handleDelete(book.id) }}/>
                     </TouchableOpacity>
                 </View>
             </View>
         )
     }
 
-    React.useEffect(() => {
-        getData();
-    }, [])
 
     return (
         <View style={styles.container}>

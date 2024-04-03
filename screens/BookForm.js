@@ -1,13 +1,27 @@
 import * as React from "react";
 import { StyleSheet, Text, TextInput, View, Button, Alert } from "react-native";
 import { db } from "../firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, collection, addDoc, updateDoc } from "firebase/firestore";
+import { useRoute } from "@react-navigation/native";
 
-const BookForm = () => {
+const BookForm = ({ navigation }) => {
     const [bookName, setBookName] = React.useState('');
     const [author, setAuthor] = React.useState('');
     const [year, setYear] = React.useState('');
     const [saga, setSaga] = React.useState('');
+    const route = useRoute();
+
+    React.useEffect(() => {
+        if (route.params?.book) {
+            // console.log(route.params?.book);
+            setBookName(route.params?.book.data.bookName);
+            setAuthor(route.params?.book.data.author);
+            setYear(route.params?.book.data.yearOfPublication);
+            setSaga(route.params?.book.data.saga);
+        }
+    }, [route.params?.book]);
+
+    // console.log(route.params?.book);
 
     const sendBookToDb = async () => {
         try {
@@ -30,8 +44,42 @@ const BookForm = () => {
         }
     }
 
+    const editBookToDb = async () => {
+        const bookRef = doc(db, 'Books', route.params?.book.id);
+        console.log("editing : ", route.params?.book)
+        await updateDoc(bookRef, {
+            bookName: bookName,
+            author: author,
+            yearOfPublication: year,
+            saga: saga ? saga : "stand alone book"
+        });
+        navigation.navigate('BookList');
+    }
+
     return (
         <>
+            { route.params?.book ?
+            <View style={styles.container}>
+                <Text style={styles.heading}>BookForm</Text>
+                <TextInput style={styles.input} 
+                    placeholder={ route.params?.book.data.bookName } 
+                    defaultValue={ route.params?.book.data.bookName } 
+                    onChangeText={ setBookName } />
+                <TextInput style={styles.input} 
+                    placeholder={ route.params?.book.data.author } 
+                    defaultValue={ route.params?.book.data.author } 
+                    onChangeText={ setAuthor } />
+                <TextInput style={styles.input} 
+                    placeholder={ route.params?.book.data.yearOfPublication } 
+                    defaultValue={ route.params?.book.data.yearOfPublication } 
+                    onChangeText={ setYear } />
+                <TextInput style={styles.input} 
+                    placeholder={ route.params?.book.data.saga } 
+                    defaultValue={ route.params?.book.data.saga } 
+                    onChangeText={ setSaga } />
+                <Button title="Edit book" onPress={() => { editBookToDb() }}/>
+            </View>
+            :
             <View style={styles.container}>
                 <Text style={styles.heading}>BookForm</Text>
                 <TextInput style={styles.input} placeholder="Book Name" value={ bookName } onChangeText={ setBookName } />
@@ -40,6 +88,7 @@ const BookForm = () => {
                 <TextInput style={styles.input} placeholder="Saga" value={ saga } onChangeText={ setSaga } />
                 <Button title="Add book" onPress={() => { sendBookToDb() }}/>
             </View>
+            }
         </>
     );
 }
