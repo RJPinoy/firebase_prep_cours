@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "784180562458",
+    "project_id": "fir-prep-cours",
+    "storage_bucket": "fir-prep-cours.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784180562458:android:1123828ac13015ce069fa3",
+        "android_client_info": {
+          "package_name": "android.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOa2ZUYMaQ1m4trdicWOCcWRVu4LD4K2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

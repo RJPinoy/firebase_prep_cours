@@ -25,7 +25,7 @@ const BookList = ({ navigation }) => {
     
         // Clean up the subscription when the component unmounts
         return unsubscribe;
-    }, [navigation]);    
+    }, [navigation]);
 
     const handleEdit = (id) => {
         const thisBook = books.find(book => book.id === id);

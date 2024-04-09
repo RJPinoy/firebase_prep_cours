@@ -9,6 +9,7 @@ const HomeScreen = ({ navigation }) => {
                 <Button title='Navigate to Firestore page' onPress={() => { navigation.navigate('Firestore') }} />
                 <Button title='Navigate to BookForm page' onPress={() => { navigation.navigate('BookForm') }} />
                 <Button title='Navigate to BookList page' onPress={() => { navigation.navigate('BookList') }} />
+                <Button title='Navigate to ScanScreen page' onPress={() => { navigation.navigate('ScanScreen') }} />
             </View>
         </>
     );

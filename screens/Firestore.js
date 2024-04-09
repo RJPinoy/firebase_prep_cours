@@ -37,4 +37,4 @@ const Firestore = () => {
     );
 }
  
- export default Firestore;
+export default Firestore;
